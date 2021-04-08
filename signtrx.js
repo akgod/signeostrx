@@ -3,10 +3,11 @@ const { JsSignatureProvider } = require('eosjs/dist/eosjs-jssig');
 const fetch = require('node-fetch'); 
 const { TextDecoder, TextEncoder } = require('util');
 const rpc = new JsonRpc('https://eos.newdex.one', { fetch }); 
-const EosApi = require('eosjs-api')    //'http://172.31.212.127:8888',
+const EosApi = require('eosjs-api')    
 
 const signatureProvider = new JsSignatureProvider(["PRIVATE KEY"]);
 const api = new Api({ rpc, signatureProvider , textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
+let endPoints=['https://eos.newdex.one'];
 
 function sleep (time) {  
 	return new Promise((resolve) => setTimeout(resolve, time));
@@ -47,7 +48,6 @@ async function sendtrx() {
 				ref_block_num: info.last_irreversible_block_num & 0xFFFF,
 				ref_block_prefix: block.ref_block_prefix
 			}
-			console.log("time----:"+ chainDate);
 
 			var sAct=await api.serializeActions(actions);  // 打包Actions	
 			var resultSet=new Set();
@@ -76,7 +76,7 @@ async function sendtrx() {
 				signatures:sign.signatures
 			})
 
-			let eos = EosApi({httpEndpoint: endPoints[i]});
+			let eos = EosApi({httpEndpoint: endPoints[0]});
 				for(let x of resultSet){
 
 					let tmp={
